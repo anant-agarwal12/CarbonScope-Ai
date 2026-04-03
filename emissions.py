@@ -1,17 +1,26 @@
-def get_factor(cat):
-    # rough mapping, kg CO2e per USD
-    rates = {
-        'travel': 1.25,
-        'software': 0.05,
-        'hardware': 0.85,
-        'general': 0.2
-    }
-    return rates.get(cat, 0.2)
-    
-def calc_emission(item, cat):
-    cost = float(item.get('amount', 0))
-    if cost == 0:
-        cost = 1 # fallback to avoid zero emission
+factors = {
+    'metals': 2.5,        # kg CO2e per unit
+    'plastics': 3.1,      # kg CO2e per unit
+    'transport': 1.8,     # kg CO2e per delivery
+    'electronics': 50.0,  # kg CO2e per device
+    'office supplies': 0.5, # kg CO2e per bulk pack
+    'other': 1.0          # general fallback stuff
+}
+
+def get_emission(qty, cat):
+    # handle missing or bad quantity
+    try:
+        q = float(qty)
+    except (ValueError, TypeError):
+        q = 1.0
+
+    if q <= 0:
+        q = 1.0
         
-    multiplier = get_factor(cat)
-    return cost * multiplier
+    # skip wild outliers
+    if q > 100000:
+        print(f"Skipping crazy high quantity: {q}")
+        return 0.0
+
+    factor = factors.get(cat, 1.0)
+    return q * factor
