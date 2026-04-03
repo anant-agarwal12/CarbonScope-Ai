@@ -8,7 +8,7 @@ CarbonScope AI is an AI-powered carbon accounting platform designed for SMEs to 
 - **Node.js 18+** (for Frontend)
 - **Python 3.10+** (for Backend)
 
-### 1. Backend Installation & Run
+### 1. Backend Installation & Run (Local)
 1. Install dependencies:
    ```bash
    pip install -r requirements.txt
@@ -19,7 +19,7 @@ CarbonScope AI is an AI-powered carbon accounting platform designed for SMEs to 
    ```
    The API will be live at `http://localhost:8000`. You can visit `http://localhost:8000/docs` for interactive documentation.
 
-### 2. Frontend Installation & Run
+### 2. Frontend Installation & Run (Local)
 1. Navigate to the frontend directory:
    ```bash
    cd frontend
@@ -33,6 +33,28 @@ CarbonScope AI is an AI-powered carbon accounting platform designed for SMEs to 
    npm run dev
    ```
    The dashboard will be available at `http://localhost:3000`.
+
+---
+
+## ☁️ Cloud Deployment (Vercel + Render)
+
+To make the app available 24/7 online:
+
+### 1. Deploy the Backend to Render (Free)
+1. Push your code to GitHub.
+2. Go to **Render.com** > **New Web Service**.
+3. Connect your repository. Render will automatically detect the `Dockerfile`.
+4. Ensure the **Health Check Path** is left blank or set to `/health`.
+5. Deploy. Copy the live URL (e.g., `https://carbonscope-backend.onrender.com`).
+
+### 2. Deploy the Frontend to Vercel (Free)
+1. Go to **Vercel.com** > **Add New Project** and connect your repository.
+2. Set the **Framework Preset** to `Next.js`.
+3. Set the **Root Directory** to `frontend`.
+4. Go to **Environment Variables** and add:
+   * **Key**: `NEXT_PUBLIC_API_URL`
+   * **Value**: *Your Render URL from Step 1*
+5. Deploy. The platform will automatically connect to your live Python AI backend.
 
 ---
 

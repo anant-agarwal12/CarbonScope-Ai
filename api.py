@@ -22,9 +22,15 @@ class PipelineResponse(BaseModel):
     records: list
     metrics: dict
 
+@app.head("/")
 @app.get("/")
 def read_root():
     return {"status": "active", "message": "CarbonScope AI API is running"}
+
+@app.head("/health")
+@app.get("/health")
+def health_check():
+    return {"status": "healthy"}
 
 @app.post("/api/pipeline", response_model=PipelineResponse)
 async def process_file(file: UploadFile = File(...)):
