@@ -1,0 +1,5 @@
+id,date,description,amount,currency
+1,2026-04-01,uber to office,35.50,USD
+2,2026-04-02,aws bill,250.00,USD
+3,2026-04-03,new macbook,1200.00,USD
+4,2026-04-04,lunch meeting,0,USD
