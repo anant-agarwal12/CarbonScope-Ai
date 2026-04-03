@@ -11,7 +11,7 @@ import DataTable from "@/components/DataTable";
 import InsightsPanel from "@/components/InsightsPanel";
 import FlagsPanel from "@/components/FlagsPanel";
 import ActionsSection from "@/components/ActionsSection";
-import { metrics } from "@/lib/mock-data";
+import { metrics as initialMetrics, emissionRecords } from "@/lib/mock-data";
 import { useState } from "react";
 
 // Minimal Placeholder Components for other tabs
@@ -113,6 +113,37 @@ function SettingsView() {
 
 export default function DashboardPage() {
   const [activeTab, setActiveTab] = useState("Dashboard");
+  const [dashboardMetrics, setDashboardMetrics] = useState(initialMetrics);
+  const [dashboardRecords, setDashboardRecords] = useState(emissionRecords);
+
+  const handleDataProcessed = (data: any) => {
+    // Process backend response and merge with existing UI state
+    setDashboardMetrics(prev => ({
+      ...prev,
+      totalEmissions: prev.totalEmissions + data.metrics.totalEmissions,
+      avgConfidence: Math.round((prev.avgConfidence + data.metrics.avgConfidence) / 2),
+      documentsIngested: prev.documentsIngested + 1,
+      highRiskItems: prev.highRiskItems + data.metrics.highRiskItems,
+      itemsProcessed: prev.itemsProcessed + data.metrics.itemsProcessed
+    }));
+
+    const newRecords = data.records.map((r: any, i: number) => ({
+      id: `api-record-${Date.now()}-${i}`,
+      supplier: "Captured from document", 
+      date: new Date().toISOString().split("T")[0],
+      description: r.description,
+      category: r.category,
+      quantity: r.quantity,
+      unit: "items",
+      unitPrice: "N/A",
+      emission: r.emission,
+      emissionLow: parseFloat((r.emission * 0.9).toFixed(2)),
+      emissionHigh: parseFloat((r.emission * 1.1).toFixed(2)),
+      confidence: r.confidence
+    }));
+
+    setDashboardRecords(prev => [...newRecords, ...prev]);
+  };
 
   return (
     <div className="min-h-screen bg-[#08080d] text-white">
@@ -126,7 +157,7 @@ export default function DashboardPage() {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <MetricCard
                 title="Total Scope 3"
-                value={`${(metrics.totalEmissions / 1000).toFixed(1)} tCO₂e`}
+                value={`${(dashboardMetrics.totalEmissions / 1000).toFixed(1)} tCO₂e`}
                 icon={Flame}
                 trend="+4.2%"
                 trendDirection="up"
@@ -135,7 +166,7 @@ export default function DashboardPage() {
               />
               <MetricCard
                 title="Avg Confidence"
-                value={`${metrics.avgConfidence}%`}
+                value={`${dashboardMetrics.avgConfidence}%`}
                 icon={BarChart3}
                 trend="stable"
                 trendDirection="neutral"
@@ -144,14 +175,14 @@ export default function DashboardPage() {
               />
               <MetricCard
                 title="Documents Ingested"
-                value={metrics.documentsIngested}
+                value={dashboardMetrics.documentsIngested}
                 icon={FileText}
                 accentColor="amber"
                 subtitle="invoices, receipts, POs"
               />
               <MetricCard
                 title="Flagged Items"
-                value={metrics.highRiskItems}
+                value={dashboardMetrics.highRiskItems}
                 icon={AlertTriangle}
                 trend="needs review"
                 trendDirection="neutral"
@@ -164,11 +195,11 @@ export default function DashboardPage() {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
               <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] px-5 py-4">
                 <p className="text-white/40 text-[10px] uppercase tracking-wider mb-1">Items Processed</p>
-                <p className="text-white text-lg font-bold tabular-nums">{metrics.itemsProcessed}</p>
+                <p className="text-white text-lg font-bold tabular-nums">{dashboardMetrics.itemsProcessed}</p>
               </div>
               <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] px-5 py-4">
                 <p className="text-white/40 text-[10px] uppercase tracking-wider mb-1">Suppliers Tracked</p>
-                <p className="text-white text-lg font-bold tabular-nums">{metrics.suppliersTracked}</p>
+                <p className="text-white text-lg font-bold tabular-nums">{dashboardMetrics.suppliersTracked}</p>
               </div>
               <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] px-5 py-4">
                 <p className="text-white/40 text-[10px] uppercase tracking-wider mb-1">Coverage</p>
@@ -181,7 +212,7 @@ export default function DashboardPage() {
             </div>
 
             <PipelineStepper />
-            <UploadCard />
+            <UploadCard onDataProcessed={handleDataProcessed} />
             <ChartsSection />
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
@@ -190,10 +221,10 @@ export default function DashboardPage() {
             </div>
 
             <div className="mb-6">
-              <DataTable />
+              <DataTable records={dashboardRecords} />
             </div>
 
-            <ActionsSection />
+            <ActionsSection records={dashboardRecords} />
           </div>
         )}
 

@@ -2,7 +2,6 @@
 
 import { useState } from "react";
 import { ChevronDown, ChevronUp } from "lucide-react";
-import { emissionRecords } from "@/lib/mock-data";
 
 type SortKey = "description" | "category" | "quantity" | "emission" | "confidence";
 type SortDir = "asc" | "desc";
@@ -13,7 +12,7 @@ function confidenceBadge(conf: number) {
   return "bg-rose-500/15 text-rose-400 border-rose-500/20";
 }
 
-export default function DataTable() {
+export default function DataTable({ records = [] }: { records?: any[] }) {
   const [sortKey, setSortKey] = useState<SortKey>("id" as SortKey);
   const [sortDir, setSortDir] = useState<SortDir>("asc");
 
@@ -26,7 +25,7 @@ export default function DataTable() {
     }
   }
 
-  const sorted = [...emissionRecords].sort((a, b) => {
+  const sorted = [...records].sort((a, b) => {
     const aVal = a[sortKey];
     const bVal = b[sortKey];
     if (typeof aVal === "string" && typeof bVal === "string") {
@@ -46,7 +45,7 @@ export default function DataTable() {
     <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] overflow-hidden">
       <div className="px-6 py-4 border-b border-white/[0.06] flex items-center justify-between">
         <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider">Emission Records</h3>
-        <span className="text-white/30 text-xs">{emissionRecords.length} items</span>
+        <span className="text-white/30 text-xs">{records.length} items</span>
       </div>
       <div className="overflow-x-auto max-h-[440px] overflow-y-auto">
         <table className="w-full">
