@@ -1,23 +1,37 @@
-from utils import load_csv, clean_data
-from classifier import get_category
-from emissions import calc_emission
+import csv
 
 def process_file(filename):
-    raw = load_csv(filename)
-    if not raw:
-        print("no data found")
-        return None
-        
-    items = clean_data(raw)
+    records = []
     
-    total = 0.0
-    for item in items:
-        cat = get_category(item)
-        co2 = calc_emission(item, cat)
-        total += co2
+    try:
+        with open(filename, 'r', encoding='utf-8') as f:
+            reader = csv.DictReader(f)
+            
+            for row in reader:
+                desc = row.get('description', '').strip()
+                
+                # skip if we don't know what the item is
+                if not desc:
+                    continue
+                    
+                try:
+                    qty = float(row.get('quantity') or 1)
+                    price = float(row.get('price') or 0)
+                except ValueError:
+                    continue  # ignore rows with corrupted numbers
+                    
+                # fallback to avoid zero emission calcs down the line
+                if qty <= 0:
+                    qty = 1
+                    
+                records.append({
+                    'description': desc,
+                    'quantity': qty,
+                    'price': price,
+                    'total': qty * price
+                })
+                
+    except Exception as e:
+        print(f"pipeline error: {e}")
         
-    res = {
-        'processed': len(items),
-        'total_co2': round(total, 2)
-    }
-    return res
+    return records

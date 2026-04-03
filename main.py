@@ -2,18 +2,22 @@ import sys
 from pipeline import process_file
 
 def main():
-    file_path = 'sample_data.csv'
+    target = 'sample_data.csv'
     
-    # lazy arg parsing
     if len(sys.argv) > 1:
-        file_path = sys.argv[1]
+        target = sys.argv[1]
         
-    print(f"reading from {file_path}...")
+    print(f"reading from {target}...\n")
     
-    out = process_file(file_path)
-    if out:
-        print("done processing.")
-        print(f"=> estimated scope 3 footprint: {out['total_co2']} kg CO2e")
+    results = process_file(target)
+    
+    if not results:
+        print("no data returned.")
+        return
+        
+    print(f"loaded {len(results)} clean records:")
+    for res in results:
+        print(f" - {res['description']}: {res['quantity']}x ${res['price']} (sum: ${res['total']})")
 
 if __name__ == '__main__':
     main()
