@@ -1,4 +1,4 @@
-import { Download, FileSpreadsheet, RefreshCw } from "lucide-react";
+import { Download, FileSpreadsheet, RefreshCw, FileText, ExternalLink } from "lucide-react";
 
 export default function ActionsSection() {
   return (
@@ -11,11 +11,19 @@ export default function ActionsSection() {
         </button>
         <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-white/80 text-sm font-medium transition-colors border border-white/[0.08]">
           <FileSpreadsheet size={15} />
-          Export Data
+          Export CSV
+        </button>
+        <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-white/80 text-sm font-medium transition-colors border border-white/[0.08]">
+          <FileText size={15} />
+          Generate PDF
         </button>
         <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-white/80 text-sm font-medium transition-colors border border-white/[0.08]">
           <RefreshCw size={15} />
-          Simulate API Sync
+          Re-run Pipeline
+        </button>
+        <button className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-white/80 text-sm font-medium transition-colors border border-white/[0.08]">
+          <ExternalLink size={15} />
+          API Docs
         </button>
       </div>
     </div>

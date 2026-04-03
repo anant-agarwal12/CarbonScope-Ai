@@ -1,13 +1,13 @@
 "use client";
 
-import { LayoutDashboard, FileBarChart2, Database, Settings, Activity } from "lucide-react";
+import { LayoutDashboard, FileBarChart2, Database, Settings, Activity, ChevronRight } from "lucide-react";
 import { useState } from "react";
 
 const navItems = [
-  { label: "Dashboard", icon: LayoutDashboard, active: true },
-  { label: "Reports", icon: FileBarChart2, active: false },
-  { label: "Data Sources", icon: Database, active: false },
-  { label: "Settings", icon: Settings, active: false },
+  { label: "Dashboard", icon: LayoutDashboard },
+  { label: "Reports", icon: FileBarChart2 },
+  { label: "Data Sources", icon: Database },
+  { label: "Settings", icon: Settings },
 ];
 
 export default function Sidebar() {
@@ -16,9 +16,9 @@ export default function Sidebar() {
   return (
     <aside className="fixed left-0 top-0 h-screen w-64 bg-[#0a0a0f] border-r border-white/[0.06] flex flex-col z-50">
       {/* Logo */}
-      <div className="px-6 py-6 border-b border-white/[0.06]">
+      <div className="px-6 py-5 border-b border-white/[0.06]">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center">
+          <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-emerald-500 to-cyan-500 flex items-center justify-center shadow-lg shadow-emerald-500/20">
             <span className="text-white font-bold text-sm">CS</span>
           </div>
           <div>
@@ -37,21 +37,35 @@ export default function Sidebar() {
             <button
               key={item.label}
               onClick={() => setSelected(item.label)}
-              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-150 ${
+              className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition-all duration-150 group ${
                 isActive
                   ? "bg-white/[0.08] text-white font-medium"
                   : "text-white/50 hover:text-white/80 hover:bg-white/[0.04]"
               }`}
             >
               <Icon size={18} strokeWidth={isActive ? 2 : 1.5} />
-              {item.label}
+              <span className="flex-1 text-left">{item.label}</span>
+              {isActive && <ChevronRight size={14} className="text-white/30" />}
             </button>
           );
         })}
       </nav>
 
-      {/* Status */}
-      <div className="px-4 py-4 border-t border-white/[0.06]">
+      {/* Pipeline status */}
+      <div className="px-4 py-2 border-t border-white/[0.06]">
+        <div className="px-3 py-2 mb-2">
+          <p className="text-[10px] text-white/30 uppercase tracking-wider mb-2">Pipeline Status</p>
+          <div className="flex items-center gap-2">
+            <div className="flex-1 h-1.5 rounded-full bg-white/[0.06] overflow-hidden">
+              <div className="h-full w-[60%] rounded-full bg-gradient-to-r from-emerald-500 to-cyan-500" />
+            </div>
+            <span className="text-[10px] text-white/40 tabular-nums">4/6</span>
+          </div>
+        </div>
+      </div>
+
+      {/* System status */}
+      <div className="px-4 pb-4">
         <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-emerald-500/[0.08]">
           <Activity size={14} className="text-emerald-400" />
           <span className="text-emerald-400 text-xs font-medium">System Active</span>

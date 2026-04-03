@@ -15,7 +15,7 @@ const styleMap = {
 
 export default function InsightsPanel() {
   return (
-    <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-6 mb-6">
+    <div className="rounded-2xl bg-white/[0.03] border border-white/[0.06] p-6">
       <div className="flex items-center gap-2 mb-5">
         <Sparkles size={16} className="text-violet-400" />
         <h3 className="text-white/60 text-xs font-medium uppercase tracking-wider">AI-Generated Insights</h3>
@@ -31,6 +31,9 @@ export default function InsightsPanel() {
           );
         })}
       </div>
+      <p className="text-[10px] text-white/20 mt-4 px-1">
+        AI suggestion — verify feasibility before acting on recommendations.
+      </p>
     </div>
   );
 }
