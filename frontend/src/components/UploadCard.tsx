@@ -32,8 +32,8 @@ export default function UploadCard({ onDataProcessed, onUploadStart }: { onDataP
     formData.append("file", file);
 
     try {
-      // In production, abstract this out to a config or env var
-      const response = await fetch("http://127.0.0.1:8000/api/pipeline", {
+      const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const response = await fetch(`${apiUrl}/api/pipeline`, {
         method: "POST",
         body: formData,
       });
