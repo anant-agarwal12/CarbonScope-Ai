@@ -2,5 +2,10 @@ node_modules/
 __pycache__/
 *.pyc
 .next/
-.env
+.env*
 temp_*
+.build/
+dist/
+out/
+.vercel
+demo_walkthrough.md
