@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { ToastProvider } from "@/components/ui/Toast";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -14,7 +15,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "CarbonScope AI — Scope 3 Emission Intelligence",
-  description: "AI-powered Scope 3 carbon emission estimation platform",
+  description: "AI-powered Scope 3 carbon emission estimation platform for SMEs",
 };
 
 export default function RootLayout({
@@ -27,7 +28,9 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
-      <body className="min-h-full bg-[#08080d]">{children}</body>
+      <body className="min-h-full bg-[#08080d]">
+        <ToastProvider>{children}</ToastProvider>
+      </body>
     </html>
   );
 }

@@ -1,0 +1,16 @@
+description,quantity,unit,supplier,price,source
+"FCL 40ft container — Shanghai to Rotterdam",5,shipments,CMA CGM,3800.00,BOL-101220
+"LCL cargo consolidation — Bangkok to Mumbai",8,pallets,DHL Global Forwarding,1200.00,BOL-101355
+"Air freight — critical spares SIN→DEL",1,shipments,FedEx Express,6500.00,AWB-88203344
+"Domestic trucking — Pune to Chennai 14T",12,trips,Rivigo (Mahindra),18000.00,Trip manifest Q4
+"Last-mile delivery — Tier 2 cities",320,deliveries,Ecom Express,45.00,LM-batch-Q4-2024
+"Refrigerated container — perishable goods",3,shipments,Hapag-Lloyd,5200.00,BOL-102001
+"Rail freight — coal siding to plant",20,wagons,Indian Railways (FOIS),4200.00,RR-44521
+"Courier — documents and small parcels",150,parcels,Blue Dart,85.00,BD-batch-Nov
+"Drayage — port to ICD Tughlakabad",6,containers,Container Corp India,3200.00,CCI-00182
+"Cross-border trucking — Attari to Lahore",2,trips,TCI Freight,22000.00,TCI-XB-0045
+"Warehouse transfer — intra-city shuttle",40,trips,Shadowfax Logistics,250.00,SFX-Nov-batch
+"ISO tank — chemical liquid transport",4,tanks,Stolt Tank Containers,9500.00,STC-8821
+"Bulk carrier charter — iron ore Goa→Japan",1,voyage,NYK Bulk,180000.00,CP-NYK-2024-11
+"Express delivery — same-day metro parcels",85,parcels,Dunzo/Borzo,120.00,EXP-metro-Nov
+"Return logistics — defective goods pickup",60,pickups,Delhivery Reverse,90.00,REV-batch-Nov

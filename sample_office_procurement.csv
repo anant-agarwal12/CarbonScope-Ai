@@ -1,0 +1,13 @@
+description,quantity,unit,supplier,price,source
+"A4 paper reams 75gsm (economy)",500,reams,JK Paper Ltd,280.00,Invoice #JK-1102
+"Ergonomic mesh office chairs",40,units,Featherlite Furniture,12500.00,PO-OFC-0091
+"HP LaserJet M428 multifunction printer",3,units,HP India,35000.00,Invoice #HP-3320
+"Toner cartridges — HP 59A compatible",24,units,Print Rite India,1800.00,PO-OFC-0095
+"Whiteboard markers — assorted 12-pack",50,packs,Camlin Kokuyo,180.00,Invoice #CK-0442
+"Standing desk converter — pneumatic",15,units,Amazon Business,8500.00,Expense #EXP-340
+"Dell Latitude 5540 laptops (i7/16GB)",20,units,Dell Technologies,92000.00,Invoice #DL-9910
+"Wireless keyboard and mouse combo",40,sets,Logitech India,2800.00,PO-OFC-0112
+"Network switch — 48 port managed PoE+",4,units,Cisco Systems,62000.00,Invoice #CSC-1801
+"Fire extinguisher ABC type 4kg refill",12,units,Cease Fire Industries,1200.00,Maintenance log
+"LED panel lights 40W — ceiling mount",60,units,Philips Lighting,2200.00,Invoice #PHL-0553
+"Cardboard file storage boxes (pack of 25)",8,packs,Deli Stationery,450.00,PO-OFC-0125

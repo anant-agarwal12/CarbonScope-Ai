@@ -1,4 +1,5 @@
 import csv
+from datetime import datetime
 from classifier import classify
 from emissions import get_emission
 
@@ -16,7 +17,7 @@ def run(filepath):
         return []
 
     results = []
-    for row in rows:
+    for i, row in enumerate(rows):
         desc = row.get('description', '').strip()
         if not desc:
             continue
@@ -29,15 +30,27 @@ def run(filepath):
         if qty <= 0:
             qty = 1
 
+        # Optional fields from CSV
+        supplier = row.get('supplier', 'Unknown Supplier').strip()
+        price = row.get('price', '0')
+        source_doc = row.get('source', f'Row-{i+1}')
+
         cat, conf = classify(desc)
-        co2 = get_emission(qty, cat)
+        co2, co2_low, co2_high = get_emission(qty, cat)
 
         results.append({
             'description': desc,
             'category': cat,
+            'supplier': supplier,
             'quantity': qty,
-            'emission': round(co2, 2),
-            'confidence': conf
+            'unit': row.get('unit', 'units').strip() if row.get('unit') else 'units',
+            'unitPrice': float(price) if price else 0,
+            'emission': co2,
+            'emissionLow': co2_low,
+            'emissionHigh': co2_high,
+            'confidence': conf,
+            'date': row.get('date', datetime.now().strftime('%Y-%m-%d')),
+            'source': source_doc
         })
 
     return results

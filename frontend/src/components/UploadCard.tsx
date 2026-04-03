@@ -9,7 +9,7 @@ const initialRecentFiles = [
   { name: "supplier_quotes_dec.xlsx", rows: null, status: "queued" },
 ];
 
-export default function UploadCard({ onDataProcessed }: { onDataProcessed?: (data: any) => void }) {
+export default function UploadCard({ onDataProcessed, onUploadStart }: { onDataProcessed?: (data: any) => void; onUploadStart?: () => void }) {
   const [isUploading, setIsUploading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [recentFiles, setRecentFiles] = useState(initialRecentFiles);
@@ -26,6 +26,7 @@ export default function UploadCard({ onDataProcessed }: { onDataProcessed?: (dat
   const uploadFile = async (file: File) => {
     setIsUploading(true);
     setError(null);
+    if (onUploadStart) onUploadStart();
 
     const formData = new FormData();
     formData.append("file", file);
