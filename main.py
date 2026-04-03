@@ -1,5 +1,5 @@
 import sys
-from pipeline import process_file
+from pipeline import run
 
 def main():
     target = 'sample_data.csv'
@@ -9,7 +9,7 @@ def main():
         
     print(f"reading from {target}...\n")
     
-    results = process_file(target)
+    results = run(target)
     
     if not results:
         print("no data returned.")
@@ -17,7 +17,7 @@ def main():
         
     print(f"loaded {len(results)} clean records:")
     for res in results:
-        print(f" - {res['description']}: {res['quantity']}x ${res['price']} (sum: ${res['total']})")
+        print(f" - {res['description']} ({res['category']}): {res['quantity']} qty => {res['emission']} kg CO2e (conf: {res['confidence']}%)")
 
 if __name__ == '__main__':
     main()

@@ -145,11 +145,26 @@ export default function DashboardPage() {
     setDashboardRecords(prev => [...newRecords, ...prev]);
   };
 
+  const handleDateChange = (dateId: string, shortLabel: string) => {
+    // Mock scramble of dashboard metrics to simulate loading different historic months
+    const randomMultiplier = 0.4 + Math.random() * 0.8; 
+    setDashboardMetrics({
+      totalEmissions: Math.round(initialMetrics.totalEmissions * randomMultiplier),
+      avgConfidence: Math.min(99, Math.round(initialMetrics.avgConfidence * (0.9 + Math.random() * 0.2))),
+      documentsIngested: Math.round(initialMetrics.documentsIngested * randomMultiplier),
+      highRiskItems: Math.round(initialMetrics.highRiskItems * randomMultiplier),
+      itemsProcessed: Math.round(initialMetrics.itemsProcessed * randomMultiplier),
+      suppliersTracked: Math.round(initialMetrics.suppliersTracked * randomMultiplier)
+    });
+    
+    setDashboardRecords([...emissionRecords].sort(() => Math.random() - 0.5).slice(0, Math.max(3, Math.floor(emissionRecords.length * randomMultiplier))));
+  };
+
   return (
     <div className="min-h-screen bg-[#08080d] text-white">
       <Sidebar selected={activeTab} onSelect={setActiveTab} />
       <main className="ml-64 p-8 max-w-[1400px]">
-        <Header />
+        <Header onDateChange={handleDateChange} />
 
         {activeTab === "Dashboard" && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
