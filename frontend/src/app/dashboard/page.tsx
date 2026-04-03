@@ -1,6 +1,6 @@
 "use client";
 
-import { Flame, BarChart3, Layers, AlertTriangle, FileText, Download, FileSpreadsheet, RefreshCw, ExternalLink, Box } from "lucide-react";
+import { Flame, BarChart3, Layers, AlertTriangle, FileText, Download, FileSpreadsheet, RefreshCw, ExternalLink, Box, FileBarChart2 } from "lucide-react";
 import Sidebar from "@/components/Sidebar";
 import Header from "@/components/Header";
 import MetricCard from "@/components/ui/MetricCard";
