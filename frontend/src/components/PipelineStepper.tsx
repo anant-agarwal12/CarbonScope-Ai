@@ -52,9 +52,9 @@ export default function PipelineStepper({ status = "idle" as PipelineStatus }: {
       setActiveStep(defaultSteps.length);
       setStepTimings(defaultSteps.map((s) => `${(s.duration / 1000).toFixed(1)}s`));
     } else {
-      // idle: show first 3 completed, 4th active (demo default)
-      setActiveStep(3);
-      setStepTimings(["1.2s", "3.8s", "2.1s", "—", "—", "—"]);
+      // idle: show clean initial state
+      setActiveStep(-1);
+      setStepTimings(defaultSteps.map(() => "—"));
     }
   }, [status]);
 
