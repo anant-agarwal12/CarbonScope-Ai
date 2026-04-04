@@ -11,7 +11,7 @@ import DataTable from "@/components/DataTable";
 import InsightsPanel from "@/components/InsightsPanel";
 import FlagsPanel from "@/components/FlagsPanel";
 import ActionsSection from "@/components/ActionsSection";
-import Walkthrough from "@/components/Walkthrough";
+
 import { metrics as initialMetrics, emissionRecords } from "@/lib/mock-data";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
@@ -196,19 +196,23 @@ export default function DashboardPage() {
       });
       const data = await res.json();
       if (res.ok && data.records) {
-        setDashboardRecords(data.records);
+        const normalizedRecords = data.records.map((r: any) => ({
+          ...r,
+          id: r._id || `api-${Math.random()}`
+        }));
+        setDashboardRecords(normalizedRecords);
         // compute basic metrics for prod
-        const totalEmissions = data.records.reduce((acc: number, r: any) => acc + (r.emission || 0), 0);
-        const highRiskItems = data.records.filter((r: any) => r.confidence < 80).length;
-        const avgConfidence = data.records.length ? Math.round(data.records.reduce((acc: number, r: any) => acc + r.confidence, 0) / data.records.length) : 0;
+        const totalEmissions = normalizedRecords.reduce((acc: number, r: any) => acc + (r.emission || 0), 0);
+        const highRiskItems = normalizedRecords.filter((r: any) => (r.confidence || 0) < 80).length;
+        const avgConfidence = normalizedRecords.length ? Math.round(normalizedRecords.reduce((acc: number, r: any) => acc + (r.confidence || 0), 0) / normalizedRecords.length) : 0;
         
         setDashboardMetrics({
           totalEmissions,
           avgConfidence,
-          documentsIngested: data.records.length > 0 ? 1 : 0,
+          documentsIngested: normalizedRecords.length > 0 ? 1 : 0,
           highRiskItems,
-          itemsProcessed: data.records.length,
-          suppliersTracked: new Set(data.records.map((r: any) => r.category)).size
+          itemsProcessed: normalizedRecords.length,
+          suppliersTracked: new Set(normalizedRecords.map((r: any) => r.category)).size
         });
       }
     } catch(err) {
@@ -265,7 +269,7 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[#08080d] text-white">
-      <Walkthrough />
+
       <Sidebar selected={activeTab} onSelect={setActiveTab} />
       <main className="ml-64 p-8 max-w-[1400px]">
         <Header 

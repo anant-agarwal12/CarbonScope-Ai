@@ -99,10 +99,10 @@ export default function DataTable({ records = [] }: { records?: any[] }) {
                   {row.quantity} <span className="text-white/25 text-[10px]">{row.unit}</span>
                 </td>
                 <td className="px-4 py-3 text-sm text-white/80 text-right tabular-nums font-medium">
-                  {row.emission.toLocaleString()}
+                  {row.emission ? row.emission.toLocaleString() : 0}
                 </td>
                 <td className="px-4 py-3 text-[11px] text-white/30 text-right tabular-nums">
-                  {row.emissionLow.toLocaleString()}–{row.emissionHigh.toLocaleString()}
+                  {row.emissionLow ? row.emissionLow.toLocaleString() : (row.emission ? (row.emission * 0.9).toFixed(1) : 0)}–{row.emissionHigh ? row.emissionHigh.toLocaleString() : (row.emission ? (row.emission * 1.1).toFixed(1) : 0)}
                 </td>
                 <td className="px-4 py-3 text-center">
                   <span className={`text-xs font-semibold px-2.5 py-1 rounded-lg border ${confidenceBadge(row.confidence)}`}>
