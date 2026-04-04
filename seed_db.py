@@ -83,5 +83,7 @@ async def seed():
     print(f"Successfully seeded {len(result.inserted_ids)} emission factor categories into MongoDB!")
 
 if __name__ == "__main__":
+    from database import MONGO_URI
+    print(f"Connecting to: {MONGO_URI}")
     print("Seeding database...")
     asyncio.run(seed())

@@ -4,6 +4,9 @@ from passlib.context import CryptContext
 import jwt
 from datetime import datetime, timedelta
 import ssl
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Use passlib for password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
