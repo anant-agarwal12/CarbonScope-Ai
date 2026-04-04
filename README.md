@@ -27,4 +27,4 @@ CarbonScope AI is an AI-powered carbon accounting platform designed for SMEs to 
 -   **Frontend**: Next.js, React, Recharts, Tailwind CSS.
 -   **Backend**: FastAPI, Motor (Async MongoDB), PyJWT.
 -   **Database**: MongoDB Community Edition.
--   **AI Engine**: Google Gemini API for OCR & Extration.
+-   **AI Engine**: Google Gemini API for OCR & Extration..
