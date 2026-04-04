@@ -19,3 +19,6 @@ python seed_db.py
 echo.
 echo Launching Apps...
 npm start
+
+echo.
+pause
