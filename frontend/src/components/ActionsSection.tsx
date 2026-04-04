@@ -67,7 +67,11 @@ export default function ActionsSection({ records = [] }: { records?: any[] }) {
         </button>
         <button
           className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-white/[0.06] hover:bg-white/[0.1] text-white/80 text-sm font-medium transition-colors border border-white/[0.08]"
-          onClick={() => { addToast("Opening FastAPI interactive docs...", "success"); window.open("http://127.0.0.1:8000/docs", "_blank"); }}
+          onClick={() => { 
+            addToast("Opening API interactive docs...", "success"); 
+            const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+            window.open(`${apiUrl}/docs`, "_blank"); 
+          }}
         >
           <ExternalLink size={15} />
           API Docs

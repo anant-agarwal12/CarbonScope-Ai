@@ -11,8 +11,10 @@ import DataTable from "@/components/DataTable";
 import InsightsPanel from "@/components/InsightsPanel";
 import FlagsPanel from "@/components/FlagsPanel";
 import ActionsSection from "@/components/ActionsSection";
+import Walkthrough from "@/components/Walkthrough";
 import { metrics as initialMetrics, emissionRecords } from "@/lib/mock-data";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/Toast";
 
 // Tab placeholder views
@@ -162,11 +164,65 @@ function SettingsView() {
 }
 
 export default function DashboardPage() {
+  const router = useRouter();
+  const [isDemoMode, setIsDemoMode] = useState(false);
   const [activeTab, setActiveTab] = useState("Dashboard");
-  const [dashboardMetrics, setDashboardMetrics] = useState(initialMetrics);
-  const [dashboardRecords, setDashboardRecords] = useState(emissionRecords);
+  const [dashboardMetrics, setDashboardMetrics] = useState({ totalEmissions: 0, avgConfidence: 0, documentsIngested: 0, highRiskItems: 0, itemsProcessed: 0, suppliersTracked: 0 });
+  const [dashboardRecords, setDashboardRecords] = useState<any[]>([]);
   const [pipelineStatus, setPipelineStatus] = useState<"idle" | "running" | "completed">("idle");
   const { addToast } = useToast();
+
+  useEffect(() => {
+    // Auth check
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/login");
+      return;
+    }
+
+    if (!isDemoMode) {
+      fetchRecords(token);
+    } else {
+      setDashboardRecords(emissionRecords);
+      setDashboardMetrics(initialMetrics);
+    }
+  }, [isDemoMode, router]);
+
+  const fetchRecords = async (token: string) => {
+    const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+    try {
+      const res = await fetch(`${apiUrl}/api/records`, {
+        headers: { "Authorization": `Bearer ${token}` }
+      });
+      const data = await res.json();
+      if (res.ok && data.records) {
+        setDashboardRecords(data.records);
+        // compute basic metrics for prod
+        const totalEmissions = data.records.reduce((acc: number, r: any) => acc + (r.emission || 0), 0);
+        const highRiskItems = data.records.filter((r: any) => r.confidence < 80).length;
+        const avgConfidence = data.records.length ? Math.round(data.records.reduce((acc: number, r: any) => acc + r.confidence, 0) / data.records.length) : 0;
+        
+        setDashboardMetrics({
+          totalEmissions,
+          avgConfidence,
+          documentsIngested: data.records.length > 0 ? 1 : 0,
+          highRiskItems,
+          itemsProcessed: data.records.length,
+          suppliersTracked: new Set(data.records.map((r: any) => r.category)).size
+        });
+      }
+    } catch(err) {
+      console.error(err);
+    }
+  };
+
+  const toggleDemoMode = () => {
+    setIsDemoMode(prev => {
+      const newMode = !prev;
+      addToast(newMode ? "Demo Mode Enabled using mock data" : "Exited Demo Mode. Viewing your live data.", "info");
+      return newMode;
+    });
+  };
 
   const handleDataProcessed = (data: any) => {
     // Update pipeline status
@@ -209,9 +265,13 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-[#08080d] text-white">
+      <Walkthrough />
       <Sidebar selected={activeTab} onSelect={setActiveTab} />
       <main className="ml-64 p-8 max-w-[1400px]">
-        <Header />
+        <Header 
+           isDemoMode={isDemoMode}
+           onToggleDemo={toggleDemoMode}
+        />
 
         {activeTab === "Dashboard" && (
           <div className="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -226,15 +286,17 @@ export default function DashboardPage() {
                 accentColor="emerald"
                 subtitle="across all categories"
               />
-              <MetricCard
-                title="Avg Confidence"
-                value={`${dashboardMetrics.avgConfidence}%`}
-                icon={BarChart3}
-                trend="stable"
-                trendDirection="neutral"
-                accentColor="cyan"
-                subtitle="classification accuracy"
-              />
+              <div className="tour-metrics">
+                <MetricCard
+                  title="Avg Confidence"
+                  value={`${dashboardMetrics.avgConfidence}%`}
+                  icon={BarChart3}
+                  trend="stable"
+                  trendDirection="neutral"
+                  accentColor="cyan"
+                  subtitle="classification accuracy"
+                />
+              </div>
               <MetricCard
                 title="Documents Ingested"
                 value={dashboardMetrics.documentsIngested}
@@ -273,9 +335,13 @@ export default function DashboardPage() {
               </div>
             </div>
 
-            <PipelineStepper status={pipelineStatus} />
-            <UploadCard onDataProcessed={handleDataProcessed} onUploadStart={handleUploadStart} />
-            <ChartsSection />
+            <div className="tour-upload-zone">
+              <UploadCard onDataProcessed={handleDataProcessed} onUploadStart={handleUploadStart} />
+            </div>
+            
+            <div className="tour-charts">
+              <ChartsSection records={dashboardRecords} />
+            </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
               <InsightsPanel />

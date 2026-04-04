@@ -56,7 +56,7 @@ export default function Home() {
             <ArrowRight size={16} />
           </Link>
           <a
-            href="http://127.0.0.1:8000/docs"
+            href={process.env.NEXT_PUBLIC_API_URL ? `${process.env.NEXT_PUBLIC_API_URL}/docs` : "http://127.0.0.1:8000/docs"}
             target="_blank"
             rel="noopener noreferrer"
             className="flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-white/[0.06] hover:bg-white/[0.1] text-white/80 font-semibold transition-colors border border-white/[0.08] text-sm"

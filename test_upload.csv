@@ -1,8 +1,11 @@
-description,quantity,price
-"Steel cold rolled, industrial grade",1200,2.50
-"LDPE packing film wholesale",450,1.20
-"Freight forwarder, Shenzhen to LA port",2,4500.00
-"Cloud compute credits AWS US-East",1,12000.00
-"Office desks, ergonomic setup",40,850.00
-"Mystery unstructured charge",1,50.00
-"High performance networking gear",12,3200.00
+description,quantity
+Electricity Usage,1200
+Diesel Fuel (Fleet),450
+Copy Paper,25
+Business Travel,300
+Natural Gas,150
+Office Stationery,45
+Plastic Packaging,90
+Metal Parts,200
+Waste Disposal,15
+Taxi Travel,80

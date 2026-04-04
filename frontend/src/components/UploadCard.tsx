@@ -33,8 +33,13 @@ export default function UploadCard({ onDataProcessed, onUploadStart }: { onDataP
 
     try {
       const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://127.0.0.1:8000";
+      const token = localStorage.getItem("token");
+      
       const response = await fetch(`${apiUrl}/api/pipeline`, {
         method: "POST",
+        headers: {
+          "Authorization": token ? `Bearer ${token}` : ""
+        },
         body: formData,
       });
 

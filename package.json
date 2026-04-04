@@ -1,0 +1,25 @@
+{
+  "name": "carbonscope-ai",
+  "version": "1.0.0",
+  "description": "CarbonScope AI is an AI-powered carbon accounting platform designed for SMEs to automate Scope 3 GHG inventory management. It transforms unstructured supply chain data (invoices, receipts, POs) into actionable carbon insights using a custom NLP classification pipeline.",
+  "main": "index.js",
+  "scripts": {
+    "start": "concurrently \"python api.py\" \"npm run dev --prefix frontend\"",
+    "seed": "python seed_db.py",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/anant-agarwal12/CarbonScope-Ai.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/anant-agarwal12/CarbonScope-Ai/issues"
+  },
+  "homepage": "https://github.com/anant-agarwal12/CarbonScope-Ai#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
