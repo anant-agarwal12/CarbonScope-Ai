@@ -93,7 +93,7 @@ export default function UploadCard({ onDataProcessed, onUploadStart }: { onDataP
           ref={fileInputRef} 
           onChange={handleFileChange} 
           className="hidden" 
-          accept=".csv,.xlsx" 
+          accept=".csv,.xlsx,.pdf,.png,.jpg,.jpeg,.txt" 
         />
         <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-colors ${error ? 'bg-rose-500/10 group-hover:bg-rose-500/20' : 'bg-emerald-500/10 group-hover:bg-emerald-500/20'}`}>
           {isUploading ? (
